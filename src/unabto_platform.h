@@ -50,6 +50,5 @@ extern "C" {
 #endif
 
 #define NABTO_LOG_BASIC_PRINT(severity, msg) p msg;
-#define NABTO_FATAL_EXIT /**/
 
 #endif
