@@ -38,9 +38,14 @@ git clone --recursive https://github.com/nabto/unabto-esp8266-sdk
 ```
 then change directory to the `unabto-esp8266-sdk` folder and run
 ```shell
-Make.cmd
+copy-unabto.cmd # Windows
+copy-unabto.sh  # Linux
 ```
-to copy the files from the unabto submodule into the appropriate folders. Afterwards you can zip the `unabto-esp8266-sdk` folder.
+to copy the files from the unabto submodule into the appropriate folders. Afterwards you can create a zip library with
+```shell
+make-lib.cmd # Windows
+make-lib.sh  # Linux
+```
 
 OR
 
