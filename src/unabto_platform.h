@@ -4,8 +4,6 @@
 #ifndef _UNABTO_PLATFORM_H_
 #define _UNABTO_PLATFORM_H_
 
-#include <unabto/unabto_util.h>
-
 #include "unabto_platform_types.h"
 #include <platforms/unabto_common_types.h>
 
@@ -50,5 +48,11 @@ extern "C" {
 #endif
 
 #define NABTO_LOG_BASIC_PRINT(severity, msg) p msg;
+
+/**
+* Other defines
+*/
+
+#define NABTO_FATAL_EXIT while(1);
 
 #endif

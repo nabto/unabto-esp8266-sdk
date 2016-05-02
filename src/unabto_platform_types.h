@@ -8,6 +8,4 @@ typedef unsigned long int nabto_stamp_t;
 typedef long int nabto_stamp_diff_t;
 typedef uint8_t nabto_socket_t;
 
-#define NABTO_FATAL_EXIT while(1);
-
 #endif
