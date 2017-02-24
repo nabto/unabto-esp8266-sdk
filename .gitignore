@@ -3,3 +3,4 @@
 /src/unabto/
 /src/unabto_version.h
 /*.zip
+*.h.gch
