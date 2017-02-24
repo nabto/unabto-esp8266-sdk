@@ -37,9 +37,18 @@ void setup() {
   // Initialize Serial
   Serial.begin(115200);
 
+  // Initialize WiFi
+  WiFi.begin(ssid, password);
+  Serial.print("Connecting to WiFi..");
+  while (WiFi.status() != WL_CONNECTED) {
+    Serial.print(".");
+    delay(500);
+  }
+  Serial.println("done");
+
   // Initialize Nabto
   Serial.println("Init...");
-  Nabto.begin(ssid, password, nabtoId, presharedKey);
+  Nabto.begin(nabtoId, presharedKey);
 
   // Optionally get nabto firmware version
   char versionString[10];

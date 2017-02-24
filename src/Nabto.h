@@ -13,20 +13,19 @@ class NabtoClass
 {
 public:
     /**
-    * @param ssid,         the SSID of the WiFi network
-    * @param password,     the password for the WiFi network
-    * @param nabtoId,      the Nabto ID of the device
-    * @param presharedKey, the Nabto preshared key
+    * @param device_id,       the unique device ID
+    * @param pre_shared_key,  the pre-shared crypto key
     */
-    void begin(const char* ssid, const char* password, const char* nabtoId, const char* presharedKey);
+    void begin(const char* device_id, const char* pre_shared_key);
 
     /**
-    * @param v, char array to get nabto version
+    * @param v,  string containing the uNabto version
     */
-    void version(char* v);
+    void version(char* version);
 
     /**
-    * Nabto main tick
+    * uNabto tick
+    * (Call approx. every 10ms.)
     */
     void tick();
 
