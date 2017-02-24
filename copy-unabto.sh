@@ -7,6 +7,9 @@ cp unabto/src/unabto_version.h src/
 mkdir -p src/modules/crypto
 cp -r unabto/src/modules/crypto/generic src/modules/crypto/
 
+mkdir -p src/modules/util
+cp unabto/src/modules/util/read_hex.* src/modules/util/
+
 mkdir -p src/platforms
 cp unabto/src/platforms/unabto_common_types.h src/platforms/
 

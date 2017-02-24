@@ -28,9 +28,6 @@ public:
     * (Call approx. every 10ms.)
     */
     void tick();
-
-private:
-    static int hctoi(const char h);
 };
 
 /**

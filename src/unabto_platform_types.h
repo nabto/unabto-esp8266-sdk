@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include <stddef.h>
+#include <string.h>
 
 typedef unsigned long int nabto_stamp_t;
 typedef long int nabto_stamp_diff_t;
