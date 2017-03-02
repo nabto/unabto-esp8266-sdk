@@ -7,6 +7,11 @@ cp unabto/src/unabto_version.h src/
 mkdir -p src/modules/crypto
 cp -r unabto/src/modules/crypto/generic src/modules/crypto/
 
+mkdir -p src/modules/fingerprint_acl
+cp unabto/src/modules/fingerprint_acl/fp_acl.*        src/modules/fingerprint_acl/
+cp unabto/src/modules/fingerprint_acl/fp_acl_ae.*     src/modules/fingerprint_acl/
+cp unabto/src/modules/fingerprint_acl/fp_acl_memory.* src/modules/fingerprint_acl/
+
 mkdir -p src/modules/util
 cp unabto/src/modules/util/read_hex.* src/modules/util/
 
