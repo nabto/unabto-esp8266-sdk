@@ -56,7 +56,7 @@ No matter which way, we can now add the library to the Arduino IDE via `Sketch` 
 ## Run the example
 We can now open the [HeatPump.ino](./examples/HeatPump/HeatPump.ino) example by going to `File` -> `Examples` -> `Nabto-ESP8266` -> `HeatPump`
 
-Here we need to enter the SSID and password of the wireless network we want to attach to. Furthermore we need to input the device name and key we created at [[portal.appmyproduct.com](https://portal.appmyproduct.com/).
+Here we need to enter the SSID and password of the wireless network we want to attach to. Furthermore we need to input the device name and key we created at [portal.appmyproduct.com](https://portal.appmyproduct.com/).
 
 When the example is compiled you set the device into flash mode by pressing the following button combination on the Adafruit HUZZAH ESP8266 Breakout board:
 
@@ -87,7 +87,6 @@ State change from WAIT_DNS to WAIT_BS
 State change from WAIT_BS to WAIT_GSP
 ########    U_INVITE with LARGE nonce sent, version: - URL: -
 State change from WAIT_GSP to ATTACHED
-
 ```
 
-Now, connect to your device using the Heat Control](https://github.com/nabto/ionic-starter-nabto) Ionic starter app and see the LED change its brightness according to the target heat.
+Now, connect to your device using the [Heat Control](https://github.com/nabto/ionic-starter-nabto) Ionic starter app and see the LED change its brightness according to the target heat.
