@@ -2,7 +2,7 @@
 # Nabto-ESP8266 Arduino Library
 This is an example AppMyProduct device application on the ESP8266 Arduino platform simulating a heatpump. Currently supports the [Heat Control](https://github.com/nabto/ionic-starter-nabto) Ionic starter app.
 
-Please also refer to [this article](http://blog.nabto.com/2016/03/05/esp8266-wifi-module-nabto/) on the [Nabto blog](http://blog.nabto.com/) for more information.
+Please also refer to [this article](https://blog.nabto.com/2017/03/03/esp8266-wifi-module-appmyproduct/) on the [Nabto blog](http://blog.nabto.com/) for more information.
 
 ## What is needed to run the example
 The example is tested on an [Adafruit HUZZAH ESP8266 Breakout board](https://www.adafruit.com/products/2471) connected with a standard [USB to TTL Serial Cable](https://www.adafruit.com/products/954) in the following way:
