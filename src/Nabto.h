@@ -9,9 +9,8 @@
 #include <unabto/unabto_app.h>
 #include <unabto_version.h>
 
-class NabtoClass
-{
-public:
+class NabtoClass {
+ public:
     /**
     * @param device_id,       the unique device ID
     * @param pre_shared_key,  the pre-shared crypto key
@@ -28,6 +27,16 @@ public:
     * (Call approx. every 10ms.)
     */
     void tick();
+
+    application_event_result copy_buffer(unabto_query_request* read_buffer,
+                                         uint8_t* dest, uint16_t bufSize,
+                                         uint16_t* len) const;
+
+    application_event_result copy_string(unabto_query_request* read_buffer,
+                                         char* dest, uint16_t destSize) const;
+
+    bool write_string(unabto_query_response* write_buffer,
+                      const char* string) const;
 };
 
 /**

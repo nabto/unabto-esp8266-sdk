@@ -18,31 +18,28 @@
  *   the LED change its brightness according to the target heat.
  */
 #include <Nabto.h>
-
-#include <fp_acl_eeprom.h>
-#ifdef __cplusplus
 extern "C" {
-#endif
 #include <modules/fingerprint_acl/fp_acl_ae.h>
 #include <modules/fingerprint_acl/fp_acl_memory.h>
-#ifdef __cplusplus
-} // extern "C"
-#endif
+}
+#include <fp_acl_eeprom.h>
 
 // Enter ssid and password of your WiFi network
-const char* WIFI_SSID = "";
-const char* WIFI_PASSWORD = "";
+const char* WIFI_SSID = "<SSID>";
+const char* WIFI_PASSWORD = "<PASSWORD>";
 
 // Enter device id and pre-shared key from portal.appmyproduct.com
-const char* DEVICE_ID = "";
-const char* PRE_SHARED_KEY = "";
+const char* DEVICE_ID = "<DEVICE ID>";
+const char* PRE_SHARED_KEY = "<PRE-SHARED KEY>";
 
 const int LED_PIN = BUILTIN_LED;
 
-typedef enum { HPM_COOL = 0,
-               HPM_HEAT = 1,
-               HPM_CIRCULATE = 2,
-               HPM_DEHUMIDIFY = 3 } heatpump_mode_t;
+typedef enum {
+    HPM_COOL = 0,
+    HPM_HEAT = 1,
+    HPM_CIRCULATE = 2,
+    HPM_DEHUMIDIFY = 3
+} heatpump_mode_t;
 
 static uint8_t heatpump_state_ = 1;
 static int32_t heatpump_room_temperature_ = 19;
@@ -62,77 +59,57 @@ struct fp_mem_persistence fp_eeprom_;
 #define REQUIRES_OWNER FP_ACL_PERMISSION_ADMIN
 
 void setup() {
-  // Initialize built-in led
-  pinMode(LED_PIN, OUTPUT);
-  analogWrite(LED_PIN, PWMRANGE);
+    // Initialize built-in led
+    pinMode(LED_PIN, OUTPUT);
+    analogWrite(LED_PIN, PWMRANGE);
 
-  // Initialize Serial
-  Serial.begin(115200);
+    // Initialize Serial
+    Serial.begin(115200);
 
-  // Initialize WiFi
-  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-  Serial.print("Connecting to WiFi..");
-  while (WiFi.status() != WL_CONNECTED) {
-    Serial.print(".");
-    delay(500);
-  }
-  Serial.println("done");
+    // Initialize WiFi
+    WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+    Serial.print("Connecting to WiFi..");
+    while (WiFi.status() != WL_CONNECTED) {
+        Serial.print(".");
+        delay(500);
+    }
+    Serial.println("done");
 
-  // Initialize Nabto
-  Serial.println("Init Nabto...");
-  Nabto.begin(DEVICE_ID, PRE_SHARED_KEY);
+    // Initialize Nabto
+    Serial.println("Init Nabto...");
+    Nabto.begin(DEVICE_ID, PRE_SHARED_KEY);
 
-  // Print Nabto version
-  char versionString[10];
-  Nabto.version(versionString);
-  Serial.print("Nabto v");
-  Serial.print(versionString);
-  Serial.println(" running");
+    // Print Nabto version
+    char versionString[10];
+    Nabto.version(versionString);
+    Serial.print("Nabto v");
+    Serial.print(versionString);
+    Serial.println(" running");
 
-  // Initialize demo application
-  demo_init();
-  demo_application_set_device_name("ESP8266");
-  demo_application_set_device_product("ACME 9002 Heatpump");
-  demo_application_set_device_icon_("img/chip-small.png");
+    // Initialize demo application
+    demo_init();
+    demo_application_set_device_name("ESP8266");
+    demo_application_set_device_product("ACME 9002 Heatpump");
+    demo_application_set_device_icon_("img/chip-small.png");
 }
 
 void loop() {
-  Nabto.tick();
-  delay(10);
-  demo_application_tick();
-}
-
-void debug_dump_acl() {
-    void* it = db_.first();
-    while (it != NULL) {
-        struct fp_acl_user user;
-        fp_acl_db_status res = db_.load(it, &user);
-        if (res != FP_ACL_DB_OK) {
-            NABTO_LOG_WARN(("ACL error %d\n", res));
-            return;
-        }
-        NABTO_LOG_INFO(("%s [%02x:%02x:%02x:%02x:...]: %04x",
-                        user.name,
-                        user.fp[0], user.fp[1], user.fp[2], user.fp[3],
-                        user.permissions));
-        it = db_.next(it);
-    }
+    Nabto.tick();
+    demo_application_tick();
+    delay(10);
 }
 
 void demo_init() {
     struct fp_acl_settings default_settings;
-    default_settings.systemPermissions =
-        FP_ACL_SYSTEM_PERMISSION_PAIRING |
-        FP_ACL_SYSTEM_PERMISSION_LOCAL_ACCESS;
-    default_settings.defaultUserPermissions =
-        FP_ACL_PERMISSION_LOCAL_ACCESS;
-    default_settings.firstUserPermissions =
-        FP_ACL_PERMISSION_ADMIN |
-        FP_ACL_PERMISSION_LOCAL_ACCESS |
-        FP_ACL_PERMISSION_REMOTE_ACCESS;
+    default_settings.systemPermissions = FP_ACL_SYSTEM_PERMISSION_PAIRING |
+                                         FP_ACL_SYSTEM_PERMISSION_LOCAL_ACCESS;
+    default_settings.defaultUserPermissions = FP_ACL_PERMISSION_LOCAL_ACCESS;
+    default_settings.firstUserPermissions = FP_ACL_PERMISSION_ADMIN |
+                                            FP_ACL_PERMISSION_LOCAL_ACCESS |
+                                            FP_ACL_PERMISSION_REMOTE_ACCESS;
 
     if (fp_acl_eeprom_init(2048, &fp_eeprom_) != FP_ACL_DB_OK) {
-      NABTO_LOG_ERROR(("cannot load acl from eeprom"));
+        NABTO_LOG_ERROR(("cannot load acl from eeprom"));
     }
 
     fp_mem_init(&db_, &default_settings, &fp_eeprom_);
@@ -167,46 +144,38 @@ void demo_application_tick() {
 
     // Change LED brightness according to target temperature or turn LED off
     // if virtual heat-pump is powered off.
-    if(heatpump_state_) {
-        double val = (heatpump_target_temperature_ - 16) / 14.0;
-        if(val < 0) val = 0;
-        else if (val > 1) val = 1;
-        analogWrite(LED_PIN, (1 - val) * (0.95 * PWMRANGE)); // 5% - 100%
+    if (heatpump_state_) {
+        double temp = heatpump_target_temperature_;
+        if(temp > 30) temp = 30;
+        else if (temp < 16) temp = 16;
+        double val = (temp - 16) / 14.0;
+        analogWrite(LED_PIN, (1 - val) * (0.95 * PWMRANGE));  // 5% - 100%
     } else {
-        analogWrite(LED_PIN, PWMRANGE); // off
+        analogWrite(LED_PIN, PWMRANGE);  // off
     }
 }
 
-int copy_buffer(unabto_query_request* read_buffer, uint8_t* dest, uint16_t bufSize, uint16_t* len) {
-    uint8_t* buffer;
-    if (!(unabto_query_read_uint8_list(read_buffer, &buffer, len))) {
-        return AER_REQ_TOO_SMALL;
+void debug_dump_acl() {
+    void* it = db_.first();
+    while (it != NULL) {
+        struct fp_acl_user user;
+        fp_acl_db_status res = db_.load(it, &user);
+        if (res != FP_ACL_DB_OK) {
+            NABTO_LOG_WARN(("ACL error %d\n", res));
+            return;
+        }
+        NABTO_LOG_INFO(("%s [%02x:%02x:%02x:%02x:...]: %04x", user.name,
+                        user.fp[0], user.fp[1], user.fp[2], user.fp[3],
+                        user.permissions));
+        it = db_.next(it);
     }
-    if (*len > bufSize) {
-        return AER_REQ_TOO_LARGE;
-    }
-    memcpy(dest, buffer, *len);
-    return AER_REQ_RESPONSE_READY;
-}
-
-int copy_string(unabto_query_request* read_buffer, char* dest, uint16_t destSize) {
-    uint16_t len;
-    int res = copy_buffer(read_buffer, (uint8_t*)dest, destSize-1, &len);
-    if (res != AER_REQ_RESPONSE_READY) {
-        return res;
-    }
-    dest[len] = 0;
-    return AER_REQ_RESPONSE_READY;
-}
-
-int write_string(unabto_query_response* write_buffer, const char* string) {
-    return unabto_query_write_uint8_list(write_buffer, (uint8_t *)string, strlen(string));
 }
 
 bool allow_client_access(nabto_connect* connection) {
     bool local = connection->isLocal;
     bool allow = fp_acl_is_connection_allowed(connection) || local;
-    NABTO_LOG_INFO(("Allowing %s connect request: %s", (local ? "local" : "remote"), (allow ? "yes" : "no")));
+    NABTO_LOG_INFO(("Allowing %s connect request: %s",
+                    (local ? "local" : "remote"), (allow ? "yes" : "no")));
     debug_dump_acl();
     return allow;
 }
@@ -227,9 +196,9 @@ application_event_result application_event(application_request* request,
     switch (request->queryId) {
     case 10000:
         // get_public_device_info.json
-        if (!write_string(query_response, device_name_)) return AER_REQ_RSP_TOO_LARGE;
-        if (!write_string(query_response, device_product_)) return AER_REQ_RSP_TOO_LARGE;
-        if (!write_string(query_response, device_icon_)) return AER_REQ_RSP_TOO_LARGE;
+        if (!Nabto.write_string(query_response, device_name_)) return AER_REQ_RSP_TOO_LARGE;
+        if (!Nabto.write_string(query_response, device_product_)) return AER_REQ_RSP_TOO_LARGE;
+        if (!Nabto.write_string(query_response, device_icon_)) return AER_REQ_RSP_TOO_LARGE;
         if (!unabto_query_write_uint8(query_response, fp_acl_is_pair_allowed(request))) return AER_REQ_RSP_TOO_LARGE;
         if (!unabto_query_write_uint8(query_response, fp_acl_is_user_paired(request))) return AER_REQ_RSP_TOO_LARGE;
         if (!unabto_query_write_uint8(query_response, fp_acl_is_user_owner(request))) return AER_REQ_RSP_TOO_LARGE;
@@ -238,9 +207,9 @@ application_event_result application_event(application_request* request,
     case 10010:
         // set_device_info.json
         if (!fp_acl_is_request_allowed(request, REQUIRES_OWNER)) return AER_REQ_NO_ACCESS;
-        res = (application_event_result)copy_string(query_request, device_name_, sizeof(device_name_));
+        res = Nabto.copy_string(query_request, device_name_, sizeof(device_name_));
         if (res != AER_REQ_RESPONSE_READY) return res;
-        if (!write_string(query_response, device_name_)) return AER_REQ_RSP_TOO_LARGE;
+        if (!Nabto.write_string(query_response, device_name_)) return AER_REQ_RSP_TOO_LARGE;
         return AER_REQ_RESPONSE_READY;
 
     case 11000:
