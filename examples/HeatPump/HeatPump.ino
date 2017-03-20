@@ -59,12 +59,23 @@ struct fp_mem_persistence fp_eeprom_;
 #define REQUIRES_OWNER FP_ACL_PERMISSION_ADMIN
 
 void setup() {
+    // Initialize Serial
+    Serial.begin(115200);
+
+    // Wait 2s for button press to do factory reset
+    pinMode(0, INPUT_PULLUP);
+    bool factory_reset = false;
+    while(millis() < 2000) {
+      if(digitalRead(0) == LOW) {
+        Serial.println("FACTORY RESET");
+        factory_reset = true;
+        break;
+      }
+    }
+
     // Initialize built-in led
     pinMode(LED_PIN, OUTPUT);
     analogWrite(LED_PIN, PWMRANGE);
-
-    // Initialize Serial
-    Serial.begin(115200);
 
     // Initialize WiFi
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
@@ -87,7 +98,7 @@ void setup() {
     Serial.println(" running");
 
     // Initialize demo application
-    demo_init();
+    demo_init(factory_reset);
     demo_application_set_device_name("ESP8266");
     demo_application_set_device_product("ACME 9002 Heatpump");
     demo_application_set_device_icon_("img/chip-small.png");
@@ -99,7 +110,7 @@ void loop() {
     delay(10);
 }
 
-void demo_init() {
+void demo_init(bool factory_reset) {
     struct fp_acl_settings default_settings;
     default_settings.systemPermissions = FP_ACL_SYSTEM_PERMISSION_PAIRING |
                                          FP_ACL_SYSTEM_PERMISSION_LOCAL_ACCESS;
@@ -111,7 +122,9 @@ void demo_init() {
     if (fp_acl_eeprom_init(2048, &fp_eeprom_) != FP_ACL_DB_OK) {
         NABTO_LOG_ERROR(("cannot load acl from eeprom"));
     }
-
+    if(factory_reset) {
+      fp_acl_eeprom_reset();
+    }
     fp_mem_init(&db_, &default_settings, &fp_eeprom_);
     fp_acl_ae_init(&db_);
     snprintf(device_name_, sizeof(device_name_), DEVICE_NAME_DEFAULT);

@@ -18,7 +18,8 @@ fp_acl_db_status fp_acl_eeprom_load(struct fp_mem_state* acl)
     uint32_t version;
     READ_U32(version, buffer);
     if (version != FP_ACL_FILE_VERSION) {
-        // there is no saved acl database, consider it as a completely normal bootstrap scenario
+        // There is no saved valid acl database, consider it as a completely
+        // normal bootstrap scenario.
         return FP_ACL_DB_OK;
     }
 
@@ -103,6 +104,17 @@ fp_acl_db_status fp_acl_eeprom_save(struct fp_mem_state* acl)
         return FP_ACL_DB_SAVE_FAILED;
     }
 
+    return FP_ACL_DB_OK;
+}
+
+fp_acl_db_status fp_acl_eeprom_reset()
+{
+    // Reset by writing invalid version. This will be considered as bootstrap
+    // scenario by next fp_acl_eeprom_load().
+    size_t addr = 0;
+    for(size_t i = 0; i < 4; ++i) {
+        EEPROM.write(addr++, 0xff);
+    }
     return FP_ACL_DB_OK;
 }
 

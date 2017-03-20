@@ -40,6 +40,8 @@ fp_acl_db_status fp_acl_eeprom_save(struct fp_mem_state* acl);
 
 fp_acl_db_status fp_acl_eeprom_load(struct fp_mem_state* acl);
 
+fp_acl_db_status fp_acl_eeprom_reset();
+
 /**
  * Inititalize the eeprom persisting backend.
  */
