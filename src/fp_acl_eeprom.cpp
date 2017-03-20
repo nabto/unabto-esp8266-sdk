@@ -7,8 +7,6 @@ size_t eeprom_size = 0;
 
 fp_acl_db_status fp_acl_eeprom_load(struct fp_mem_state* acl)
 {
-    memset(acl, 0, sizeof(struct fp_mem_state));
-
     size_t addr = 0;
     uint8_t buffer[128];
 
@@ -20,8 +18,11 @@ fp_acl_db_status fp_acl_eeprom_load(struct fp_mem_state* acl)
     uint32_t version;
     READ_U32(version, buffer);
     if (version != FP_ACL_FILE_VERSION) {
-        return FP_ACL_DB_LOAD_FAILED;
+        // there is no saved acl database, consider it as a completely normal bootstrap scenario
+        return FP_ACL_DB_OK;
     }
+
+    memset(acl, 0, sizeof(struct fp_mem_state));
 
     // load system settings
     for(size_t i = 0; i < 16; ++i) {
