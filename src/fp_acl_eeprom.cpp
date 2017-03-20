@@ -42,8 +42,8 @@ fp_acl_db_status fp_acl_eeprom_load(struct fp_mem_state* acl)
         USER_RECORD_SIZE = FP_ACL_FP_LENGTH + FP_ACL_FILE_USERNAME_LENGTH + 4
     };
     for(i = 0; i < numUsers && i < FP_MEM_ACL_ENTRIES; i++) {
-        for(size_t i = 0; i < USER_RECORD_SIZE; ++i) {
-            buffer[i] = EEPROM.read(addr++);
+        for(size_t j = 0; j < USER_RECORD_SIZE; ++j) {
+            buffer[j] = EEPROM.read(addr++);
         }
         memcpy(acl->users[i].fp, buffer, FP_ACL_FP_LENGTH);
         memcpy(acl->users[i].name, buffer + FP_ACL_FP_LENGTH, FP_ACL_FILE_USERNAME_LENGTH); // guaranteed by compile time check
