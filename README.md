@@ -47,11 +47,11 @@ make-lib.cmd # Windows
 make-lib.sh  # Linux
 ```
 
-OR
+**OR**
 
-Download the release zip file [unabto-esp8266-sdk.zip](https://github.com/nabto/unabto-esp8266-sdk/releases)
+Download the latest `unabto-esp8266-sdk-X.X.X.zip` zip library from the [releases](https://github.com/nabto/unabto-esp8266-sdk/releases) (not the *Source code (zip)*).
 
-No matter which way, we can now add the library to the Arduino IDE via `Sketch` -> `Include Library` -> `Add .ZIP Library...` and then browse to and add the `unabto-esp8266-sdk.zip` that was just created/downloaded.
+No matter which way, we can now add the library to the Arduino IDE via `Sketch` -> `Include Library` -> `Add .ZIP Library...` and then browse to and add the `unabto-esp8266-sdk-X.X.X.zip` that was just created/downloaded.
 
 ## Run the example
 We can now open the [HeatPump.ino](./examples/HeatPump/HeatPump.ino) example by going to `File` -> `Examples` -> `Nabto-ESP8266` -> `HeatPump`
