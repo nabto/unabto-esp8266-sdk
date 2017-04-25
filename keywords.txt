@@ -1,4 +1,9 @@
-Nabto   KEYWORD1
-begin   KEYWORD2
-version KEYWORD2
-tick    KEYWORD2
+Nabto         KEYWORD1
+
+begin         KEYWORD2
+version       KEYWORD2
+tick          KEYWORD2
+copy_buffer   KEYWORD2
++copy_string  KEYWORD2
++write_string KEYWORD2
+
