@@ -1,7 +1,7 @@
 @echo off
 rem This script packs all relevant files into a zip library.
 
-set NAME=unabto-esp8266-sdk
+set NAME=unabto-esp8266-sdk-2.1.1
 
 xcopy /q /s /y src %NAME%\src\ >NUL
 xcopy /q /s /y examples %NAME%\examples\ >NUL

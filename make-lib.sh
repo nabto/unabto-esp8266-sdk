@@ -1,7 +1,7 @@
 #!/bin/bash
 # This script packs all relevant files into a zip library.
 
-NAME=unabto-esp8266-sdk
+NAME=unabto-esp8266-sdk-2.1.1
 
 mkdir -p $NAME
 
